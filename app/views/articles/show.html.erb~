@@ -1,0 +1,170 @@
+<html>
+   <head>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+   
+
+<!--Google Chart API-->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Temperature (in Celcius)','Wind(mps)'],
+	  <% @list.each do |datum|%>
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=((datum['main']['temp'])-273).round%>,<%=(datum['wind']['speed'])%>],
+          <%end%>
+        ]);
+
+        var options = {
+          title: 'Temperature analysis of Town/City of <%=@data_hash['name']%>',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+	var data1 = google.visualization.arrayToDataTable([
+          ['Date', 'Temperature (in Celcius)','Wind(mps)'],
+	  <% @list.each do |datum|%>
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=((datum['main']['temp'])-273).round%>,<%=(datum['wind']['speed'])%>],
+          <%end%>
+        ]);
+
+        var options1 = {
+          title: 'Temperature analysis of Town/City of <%=@data_hash['name']%>',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+	var chart1 = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart1.draw(data1, options1);
+
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(data, options);
+
+      }
+    </script>
+    
+
+
+
+
+  </head>
+   <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/jquery.waypoints/2.0.5/waypoints.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/jquery.smartresize/0.1/jquery.debouncedresize.js"></script>
+   <script src="/assets/cbpFixedScrollLayout.min.js"></script>
+   <script>
+      $(function() {
+      	cbpFixedScrollLayout.init();
+      });
+   </script>
+   <body style="background-color:#31bcf2">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <a class="navbar-brand" href="#">Weather App</a>
+            </div>
+            <ul class="nav navbar-nav">
+               <li class="active"><a href="#">Forecast</a></li>
+               <li><a href="#Maps">Maps</a></li>
+               <li><a href="#Graphs">Graphs</a></li>
+            </ul>
+         </div>
+      </nav>
+      <br>
+      <div class="container1">
+         <div id="cbp-fbscroller" class="cbp-fbscroller" >
+            <section id="forecast">
+               <h2 style="color:white">
+                  <%= image_tag("/assets/"+@weath[0]['icon']+".png")%><u><%=@data_hash['name']+","+@sys['country']%></u>
+               </h2>
+               <div style="padding-left: 1cm;">
+                  <strong>
+                     <div class="rcorners2" style="float:left;">
+                        <h2 style="color:white; ">Current Weather</h2>
+                        <div id="table-wrapper">
+                           <div id="table-scroll">
+                              <table style="color:white" class="table table-condensed">
+                                 <tr>
+                                    <td >Temperature</td>
+                                    <td ><%=(@main['temp']-273.0).round%></td>
+                                 </tr>
+                                 <tr>
+                                    <td >Desciption</td>
+                                    <td ><%=@weath[0]['description']%></td>
+                                 </tr>
+                                 <tr>
+                                    <td >Humidity</td>
+                                    <td ><%=@main['humidity']%></td>
+                                 </tr>
+                                 <tr>
+                                    <td >Minimum Temperature</td>
+                                    <td ><%=(@main['temp_min']-273.0).round%></td>
+                                 </tr>
+                                 <tr>
+                                    <td >Maximum Temperature</td>
+                                    <td ><%=(@main['temp_max']-273.0).round%></td>
+                                 </tr>
+                                 <td >Pressure</td>
+                                 <td ><%=@main['pressure']%> hPa</td>
+                                 </tr>
+                                 </tr>
+                                 <td >Wind Speed</td>
+                                 <td ><%=@data_hash['wind']['speed']%> mps</td>
+                                 </tr>
+                                 </tr>
+                                 <td >Wind Direction</td>
+                                 <td ><%=@direction%></td>
+                                 </tr>
+                                 </tr>
+                                 <td >Wind Speed</td>
+                                 <td ><%=@data_hash['wind']['speed']%></td>
+                                 </tr>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </strong>
+               </div>
+               <div style="padding-right: 1cm;">
+                  <div class="rcorners2" style="float:right;">
+                     <h2 style="color:white;">Future Forecast</h2>
+                     <div id="table-wrapper1">
+                        <div id="table-scroll1">
+                           <table style="color:white" class="table table-condensed">
+                              <% @list.each do |datum|%>
+                              <tr>
+                                 <td >	<%=(Time.at(datum['dt'])).strftime("%d")%>
+                                    <br><%=(Time.at(datum['dt'])).strftime("%A")%>
+                                    <br><%=((Time.at(datum['dt'])).to_s)[11..15]%>
+                                 </td>
+                                 <td class="cp_img"  >	
+                                    <%=image_tag("/assets/"+datum['weather'][0]['icon']+".png")%>
+                                 </td>
+                                 <td><br>&nbsp;&nbsp;<%=((datum['main']['temp'])-273).round%></td>
+                              </tr>
+                              <%end%>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <br>
+               <br>
+            </section>
+            <section id="Maps"><div id="curve_chart" style="width: 100%; height: 400px;opacity: 0.6;color: #6ebf74;"></div></section>
+            <section id="Graphs"></section>
+         </div>
+      </div>
+      <!--<h1 style="color:white"; font-family:Verdana, Geneva, sans-serif>The Weather App</h1>-->
+   </body>
+</html>

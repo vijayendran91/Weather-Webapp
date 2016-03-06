@@ -1,0 +1,41 @@
+<html>
+   <head>
+      <%= stylesheet_link_tag    'index', media: 'all', 'data-turbolinks-track' => true %>
+      <%= javascript_include_tag 'index', 'data-turbolinks-track' => true %>
+      <%= csrf_meta_tags %>
+   </head>
+
+   <body style="background-color:#1589FF" onload="getLocation()">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <a class="navbar-brand" href="#">Weather App</a>
+            </div>
+           </div>
+      </nav>
+<br/><br/><br/><br/>      
+<div style="padding-left: 1cm">     
+ <div class="rcorners1">
+         <div class="form-horizontal">
+            <div class="col-xs-12">
+               <%= form_for :article, url: articles_path do |f|  %>
+               <p>	
+                  <%= f.text_field :zdata, :placeholder=>"Enter the zip",:class=>"form-control" %>
+               </p>
+            </div>
+            <div class="col-xs-12">
+               <%= f.text_field :cdata, :placeholder=>"Enter the country code",:class=>"form-control" %>
+               <p>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10">		
+               <%= f.submit  'Submit', :class=>"btn btn-default"%>
+               </p>
+               <% end %>
+            </div>
+         </div>
+</div>     
+ </div>
+      <br>
+      <br>
+   </body>
+</html>

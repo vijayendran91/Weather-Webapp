@@ -1,0 +1,16 @@
+require 'net/http'
+require 'json'
+class FiveData
+	def getlist(lat,long)
+		source="http://api.openweathermap.org/data/2.5/forecast?lat="+(lat).to_s+"&lon="+(long).to_s+"&appid=1c3eb001ed0befb43072cc61150f232a" 
+		resp=Net::HTTP.get_response(URI.parse(source)) 
+		@data=resp.body
+		@data_hash=JSON.parse(@data)
+		return @data_hash['list']
+	end
+
+end
+
+fiveobj=FiveData.new
+
+puts(fiveobj.getlist(35,34))
