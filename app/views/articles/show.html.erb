@@ -1,8 +1,12 @@
 <html>
    <head>
-      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-      <%= csrf_meta_tags %>
+	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<%= csrf_meta_tags %>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
    
 
 <!--Google Chart API-->
@@ -10,31 +14,103 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
 
-      function drawChart() {
+      google.charts.setOnLoadCallback(drawChart_Temp);
+      google.charts.setOnLoadCallback(drawChart_Pressure);
+      google.charts.setOnLoadCallback(drawChart_Wind);
+      google.charts.setOnLoadCallback(drawChart_Humidity);
+
+      function drawChart_Temp() {
         var data = google.visualization.arrayToDataTable([
-          ['Date', 'Temperature (in Celcius)','Wind(mps)'],
+          ['Date', 'Temperature (in Celcius)'],
 	  <% @list.each do |datum|%>
-          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=((datum['main']['temp'])-273).round%>,<%=(datum['wind']['speed'])%>],
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=((datum['main']['temp'])-273).round%>],
           <%end%>
         ]);
 
         var options = {
           title: 'Temperature analysis of Town/City of <%=@data_hash['name']%>',
           curveType: 'function',
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+	  width:1200,
+	  height:500
+        };
+	var chart1 = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+        chart1.draw(data, options);
+
+	}
+
+	function drawChart_Pressure() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Pressure in hPa'],
+	  <% @list.each do |datum|%>
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=(datum['main']['pressure'])%>],
+          <%end%>
+        ]);
+
+        var options = {
+          title: 'Pressure analysis of Town/City of <%=@data_hash['name']%>',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+	  width:1200,
+	  height:500
+        };
+	var chart1 = new google.visualization.LineChart(document.getElementById('curve_chart3'));
+        chart1.draw(data, options);
+
+	}
+
+
+
+	function drawChart_Wind() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Wind (mps)'],
+	  <% @list.each do |datum|%>
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=(datum['wind']['speed'])%>],
+          <%end%>
+        ]);
+
+        var options = {
+          title: 'Wind analysis of Town/City of <%=@data_hash['name']%>',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+	  width:1200,
+	  height:500
         };
 
-	
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+	var chart = new google.visualization.LineChart(document.getElementById('curve_chart4'));
         chart.draw(data, options);
 
       }
-    </script>
-    
 
+
+      function drawChart_Humidity() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Humidity (is percentage)'],
+	  <% @list.each do |datum|%>
+          ['<%=((Time.at(datum['dt'])).strftime("%d")).to_s%>',<%=(datum['main']['humidity'])%>],
+          <%end%>
+        ]);
+
+        var options = {
+          title: 'Humidity analysis of Town/City of <%=@data_hash['name']%>',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+	  width:1200,
+	  height:500
+        };
+
+	var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+        chart.draw(data, options);
+
+      }
+
+
+
+
+
+    </script>
+   
 
 
 
@@ -68,8 +144,9 @@
       <br>
       <div class="container1">
          <div id="cbp-fbscroller" class="cbp-fbscroller" >
-            <section id="forecast">
-               <h2 style="color:white">
+	    <section id="forecast">
+               <br><br>
+	       <h2 style="color:white">
                   <%= image_tag("/assets/"+@weath[0]['icon']+".png")%><u><%=@data_hash['name']+","+@sys['country']%></u>
                </h2>
                <div style="padding-left: 1cm;">
@@ -145,9 +222,52 @@
                </div>
                <br>
                <br>
+	
             </section>
-            <section id="Maps"><div id="curve_chart" style="width: 100%; height: 400px;opacity: 0.6;color: #6ebf74;"></div></section>
-	    <section id="Graphs"></section>
+
+		<section id="Graphs">
+			<br><br><br><br>	
+			<div class="container" style="color:#6ebf74">
+			<br>
+				<div id="myCarousel" class="carousel slide" data-ride="carousel">		
+					<ol class="carousel-indicators">
+    						<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+						    <li data-target="#myCarousel" data-slide-to="1"></li>
+						    <li data-target="#myCarousel" data-slide-to="2"></li>
+						    <li data-target="#myCarousel" data-slide-to="3"></li>
+						    
+					</ol>					
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">					
+							<div id="curve_chart2" style="width: 100%; height: 500px;opacity: 0.6;color: #6ebf74;">
+							</div>
+						</div>
+						<div class="item">					
+							<div id="curve_chart1" style="width: 100%; height: 500px;opacity: 0.6;color: #6ebf74;">
+							</div>
+						</div>
+						<div class="item">					
+							<div id="curve_chart3" style="width: 100%; height: 500px;opacity: 0.6;color: #6ebf74;">
+							</div>
+						</div>
+						<div class="item">					
+							<div id="curve_chart4" style="width: 100%; height: 500px;opacity: 0.6;color: #6ebf74;">
+							</div>
+						</div>
+
+					</div>
+					<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>			
+		</section>
+	    <section id="Maps"></section>
          </div>
       </div>
       <!--<h1 style="color:white"; font-family:Verdana, Geneva, sans-serif>The Weather App</h1>-->

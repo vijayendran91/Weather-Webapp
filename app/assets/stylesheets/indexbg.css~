@@ -12,7 +12,7 @@ body
     border-radius: 25px;
     background: #6ebf74;
     padding: 20px 20px 20px 20px; 
-    opacity: 0.6;
+    opacity: 0.8;
     width: 35%;
     height: 150px;    
 }
@@ -96,5 +96,10 @@ body
   border:1px solid red;
   padding:right;
 }
-
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 100%;
+      height: 400px;
+     
+  }
 
