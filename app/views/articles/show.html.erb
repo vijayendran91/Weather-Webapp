@@ -144,7 +144,7 @@
       <br>
       <div class="container1">
          <div id="cbp-fbscroller" class="cbp-fbscroller" >
-	    <section id="forecast">
+	    <section id="forecast" style="background-image:url(/assets/<%=@weath[0]['icon']+'giffy.gif'%>)">
                <br><br>
 	       <h2 style="color:white">
                   <%= image_tag("/assets/"+@weath[0]['icon']+".png")%><u><%=@data_hash['name']+","+@sys['country']%></u>
@@ -225,7 +225,7 @@
 	
             </section>
 
-		<section id="Graphs">
+		<section id="Graphs" style="background-image:url(/assets/<%=@weath[0]['icon']+'giffy.gif'%>)">
 			<br><br><br><br>	
 			<div class="container" style="color:#6ebf74">
 			<br>
@@ -267,7 +267,7 @@
 				</div>
 			</div>			
 		</section>
-	    <section id="Maps"></section>
+	    <section id="Maps" style="background-image:url(/assets/<%=@weath[0]['icon']+'giffy.gif'%>)"></section>
          </div>
       </div>
       <!--<h1 style="color:white"; font-family:Verdana, Geneva, sans-serif>The Weather App</h1>-->
