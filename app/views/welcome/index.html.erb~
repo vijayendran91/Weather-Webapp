@@ -5,7 +5,7 @@
       <%= csrf_meta_tags %>
    </head>
 
-   <body style="background-color:#1589FF" onload="getLocation()">
+   <body style="background-image:url(/assets/home.jpg)">
 <nav class="navbar navbar-inverse navbar-fixed-top">
          <div class="container-fluid">
             <div class="navbar-header">
